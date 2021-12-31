@@ -1,7 +1,6 @@
 const {Client} = require('discord.js')
-require('dotenv').config();
 const mongoose = require('mongoose')
-const {Database} = process.env.MONGO
+const {Database} = require("../../config.json")
 module.exports = {
     name: "ready",
     once: true,
@@ -19,7 +18,7 @@ module.exports = {
         }).then(() => {
             console.log("The bot is now connected to mongo!")
         }).catch((err) => {
-            console.log(err)
+            console.once(err)
         })
     }
 }
