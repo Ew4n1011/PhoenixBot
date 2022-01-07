@@ -8,6 +8,8 @@ const config = require("./config.json");
 
 client.commands = new Collection();
 
+require('../Systems/giveawaySys')(client);
+
 ["Events", "Commands"].forEach(handler => {
     require(`./Handlers/${handler}`)(client, PG, Ascii);
 });
