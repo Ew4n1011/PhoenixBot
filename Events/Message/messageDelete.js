@@ -18,6 +18,6 @@ module.exports = {
             Log.addField(`Attachments:`, `${message.attachments.map(a => a.url)}`, true)
         }
 
-        new WebhookClient({url: config.webhookURL}).send({embeds: [Log]}).catch((err) => console.log(err))
+        new WebhookClient({url: config.msgLogWebhookURL}).send({embeds: [Log]}).catch((err) => console.log(err))
     }
 }

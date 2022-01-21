@@ -24,6 +24,6 @@ module.exports = {
         **Original**:\n ${Original} \n**Edited**:\n ${Edited}`.slice("0", "4096"))
         .setFooter({text: `Member: ${newMessage.author.tag} | ID: ${newMessage.author.id}`})
 
-        new WebhookClient({url: config.webhookURL}).send({embeds: [Log]}).catch((err) => console.log(err))
+        new WebhookClient({url: config.msgLogWebhookURL}).send({embeds: [Log]}).catch((err) => console.log(err))
     }
 }

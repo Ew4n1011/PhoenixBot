@@ -13,7 +13,7 @@ module.exports = {
 
         const ThankYou = new MessageEmbed()
         .setColor("PURPLE")
-        .setAuthor({Text: "SERVER BOOSTED", iconURL: `${guild.iconURL({dynamic: true, size: 512})}`})
+        .setAuthor({name: "SERVER BOOSTED", iconURL: `${guild.iconURL({dynamic: true, size: 512})}`})
 
         if(!oldMember.premiumSince && newMember.premiumSince) {
             const canvas = Canvas.createCanvas(800, 250);
