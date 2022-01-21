@@ -12,11 +12,14 @@ module.exports = {
 
         member.roles.add(config.memberRoleID)
 
-        const Welcomer = new WebhookClient({url: config.WelcomeMsgWebhookURL})
+        const Welcomer = new WebhookClient({
+            id: config.WelcomeWebhookID,
+            token: config.WelcomeWebhookToken
+        })
 
         const Welcome = new MessageEmbed()
         .setColor("AQUA")
-        .setAuthor({name: `${user.tag}`, iconURL: `${user.avatarURL({dynamic: true, size: 512})}`})
+        .setAuthor({name: `${user.tag}`, iconURL: `${user.displayAvatarURL({dynamic: true, size: 512})}`})
         .setThumbnail(user.avatarURL({dynamic: true, size: 512}))
         .setDescription(`
         Welcome ${member} to **${guild.name}**!\n

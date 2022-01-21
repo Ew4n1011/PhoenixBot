@@ -10,11 +10,14 @@ module.exports = {
     execute (member) {
         const {user, guild} = member
 
-        const Welcomer = new WebhookClient({url: config.WelcomeMsgWebhookURL})
+        const Welcomer = new WebhookClient({
+            id: config.WelcomeWebhookID,
+            token: config.WelcomeWebhookToken
+        })
 
         const Welcome = new MessageEmbed()
         .setColor("RED")
-        .setAuthor({name: `${user.tag}`, iconURL: `${user.avatarURL({dynamic: true, size: 512})}`})
+        .setAuthor({name: `${user.tag}`, iconURL: `${user.displayAvatarURL({dynamic: true, size: 512})}`})
         .setThumbnail(user.avatarURL({dynamic: true, size: 512}))
         .setDescription(`
         ${member} has left the server\n
