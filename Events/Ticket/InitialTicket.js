@@ -1,6 +1,6 @@
 const {ButtonInteraction, MessageEmbed, MessageActionRow, MessageButton} = require('discord.js')
 const DB = require('../../Structures/Schemas/Ticket')
-const config = require('../../Structures/config.json')
+const TicketSetupData = require('../../Structures/Schemas/ticketSetup')
 
 module.exports = {
     name: "interactionCreate",
@@ -11,20 +11,24 @@ module.exports = {
     async execute(interaction) {
         if(!interaction.isButton()) return
         const {guild, member, customId} = interaction
-        if(!["player", "bug", "other"].includes(customId)) return
 
-        const ID = Math.floor(Math.random() * 90000) + 10000
+        const Data = await TicketSetupData.findOne({GuildID: guild.id});
+        if(!Data) return;
+
+        if(!Data.Buttons.includes(customId)) return;
+
+        const ID = Math.floor(Math.random() * 90000) + 10000;
 
         await guild.channels.create(`${customId + "-" + ID}`, {
             type: "GUILD_TEXT",
-            parent: config.TicketCategoryId,
+            parent: Data.Category,
             permissionOverwrites: [
             {
                 id: member.id,
                 allow: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"],
             },
             {
-                id: config.everyoneId,
+                id: Data.Everyone,
                 deny: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]
             }]
         }).then(async(channel) => {
@@ -36,6 +40,7 @@ module.exports = {
                 Closed: false,
                 Locked: false,
                 Type: customId,
+                Claimed: false
             })
 
             const Embed = new MessageEmbed()
@@ -51,15 +56,10 @@ module.exports = {
                 .setStyle("PRIMARY")
                 .setEmoji("💾"),
                 new MessageButton()
-                .setCustomId("lock")
-                .setLabel("Lock")
-                .setStyle("SECONDARY")
-                .setEmoji("🔒"),
-                new MessageButton()
-                .setCustomId("unlock")
-                .setLabel("Unlock")
-                .setStyle("SUCCESS")
-                .setEmoji("🔓")
+                .setCustomId("claim")
+                .setLabel("Claim")
+                .setStyle("PRIMARY")
+                .setEmoji("🛄")
             )
     
             channel.send({

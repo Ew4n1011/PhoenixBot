@@ -1,7 +1,7 @@
 const {ButtonInteraction, MessageEmbed} = require('discord.js')
 const {createTranscript} = require('discord-html-transcripts')
-const config = require('../../Structures/config.json')
 const DB = require('../../Structures/Schemas/Ticket')
+const TicketSetupData = require('../../Structures/Schemas/ticketSetup')
 
 module.exports = {
     name: "interactionCreate",
@@ -11,8 +11,14 @@ module.exports = {
      */
     async execute(interaction) {
         if(!interaction.isButton()) return
-        const {guild, customId, channel} = interaction
-        if(!["close", "lock", "unlock"].includes(customId)) return
+        const {guild, customId, channel, member} = interaction
+        if(!["close", "claim"].includes(customId)) return
+
+        const TicketSetup = await TicketSetupData.findOne({GuildID: guild.id})
+        if(!TicketSetup) return interaction.reply({content: "The data for this system is outdated."})
+
+        if(!member.roles.cache.find((r) => r.id === TicketSetup.Handlers))
+            return interaction.reply({content: "You cannot use these buttons.", ephemeral: true})
 
         const Embed = new MessageEmbed().setColor("BLUE")
 
@@ -21,26 +27,6 @@ module.exports = {
             if (!docs)
                 return interaction.reply({content: "No data was found related to this ticket, please delete manually.", ephemeral: true})
             switch(customId) {
-                case "lock" :
-                if(docs.Locked == true)
-                return interaction.reply({content: "This ticket is already locked.", ephemeral: true})
-                await DB.updateOne({ChannelID: channel.id}, {Locked: true})
-                Embed.setDescription("🔒 | This ticket is now locked for reviewing.")
-                channel.permissionOverwrites.edit(docs.MemberID, {
-                    SEND_MESSAGES: false,
-                })
-                interaction.reply({embeds: [Embed]})
-                break
-                case "unlock" :
-                if(docs.Locked == false)
-                return interaction.reply({content: "The ticket is already unlocked.", ephemeral: true})
-                await DB.updateOne({ChannelID: channel.id}, {Locked: false})
-                Embed.setDescription("🔓 | This ticket is now unlocked.")
-                channel.permissionOverwrites.edit(docs.MemberID, {
-                    SEND_MESSAGES: true
-                })
-                interaction.reply({embeds: [Embed]})
-                break
                 case "close" :
                 if(docs.Closed == true)
                 return interaction.reply({content: "Ticket is already closed, please wait for it to get deleted", ephemeral: true})
@@ -52,7 +38,7 @@ module.exports = {
                 await DB.updateOne({ChannelID: channel.id}, {Closed: true})
 
                 const MEMBER = guild.members.cache.get(docs.MemberID)
-                const Message = await guild.channels.cache.get(config.transcriptsId).send({
+                const Message = await guild.channels.cache.get(TicketSetup.Transcripts).send({
                     embeds: [
                         Embed.setAuthor({name: `${MEMBER.user.tag}`, iconURL: `${MEMBER.user.displayAvatarURL({dynamic: true})}`})
                         .setTitle(`Transcript Type: ${docs.type}\nID: ${docs.TicketID}`)
@@ -65,6 +51,17 @@ module.exports = {
                 setTimeout(() => {
                     channel.delete()
                 }, 10 * 1000)
+                break
+                case "claim" :
+                    if(docs.Claimed == true) 
+                        return interaction.reply({content: `This ticket has already been claimed by <@${docs.ClaimedBy}>`, ephemeral: true
+                    })
+                
+                    await DB.updateOne({ChannelID: channel.id}, {Claimed: true, ClaimedBy: member.id})
+
+                    Embed.setDescription(`🛄 | This ticket is now claimed by ${member}`)
+                    interaction.reply({embeds: [Embed]})
+                break
             }
         })
     }

@@ -10,7 +10,7 @@ module.exports = {
     execute(client) {
         console.log(`Client logged in as ${client.user.tag}`)
         console.log("The bot is now ready!")
-        client.user.setActivity("UNDER CONSTRUCTION", {type: "WATCHING"})
+        client.user.setActivity("🚧 UNDER CONSTRUCTION", {type: "WATCHING"})
 
         if(!Database) return;
         mongoose.connect(Database, {

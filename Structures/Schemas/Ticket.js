@@ -6,6 +6,6 @@ module.exports = model("Tickets", new Schema({
     TicketID: String,
     ChannelID: String,
     Closed: Boolean,
-    Locked: Boolean,
-    Type: String
+    Claimed: Boolean,
+    ClaimedBy: String
 }))
