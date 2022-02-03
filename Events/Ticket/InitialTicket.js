@@ -66,13 +66,10 @@ module.exports = {
                 embeds: [Embed],
                 components: [Buttons]
             })
-            await channel.send({content: `${member} here is your ticket`}).then((m) => {
-                setTimeout(() => {
-                    m.delete().catch(() => {})
-                }, 1 * 5000)
-            })
-    
-            interaction.reply({content: `${member} your ticket has been created: ${channel}`, ephemeral: true})
+                        
+            const TicketEmbed = new MessageEmbed().setColor("GREEN").setDescription(`✅ | Your ticket has been created: ${channel}`)
+
+            interaction.reply({embeds: [TicketEmbed], ephemeral: true})
         })
     }
 }
