@@ -11,7 +11,7 @@ module.exports = {
      * @param {Client} client 
      */
     async execute(interaction, client) {
-        const Target = interaction.options.getMember("target") || interaction.member;
+        const Target = interaction.options.getUser("target") || interaction.member;
         const users = await Levels.fetch(Target.id, interaction.guildId);
         
         const Embed = new MessageEmbed().setColor("RED").setDescription("⛔ | The mentioned user has no xp.")

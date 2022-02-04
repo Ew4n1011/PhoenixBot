@@ -32,12 +32,12 @@ module.exports = {
         const Embed = new MessageEmbed()
 
         try {
-            Levels.appendXp(member.tag, interaction.guildId, amount)
+            Levels.appendXp(member.id, interaction.guildId, amount)
             Embed.setColor("GREEN").setDescription(`✅ | Gave ${amount} xp to ${member}`)
-            interaction.reply({embeds: [Embed]})
+            interaction.reply({embeds: [Embed], ephemeral: true})
         } catch (err) {
             Embed.setColor("RED").setDescription("⛔ | An error has occured.")
-            interaction.reply({embeds: [Embed]})
+            interaction.reply({embeds: [Embed], ephemeral: true})
             console.log(err)
         }
     }

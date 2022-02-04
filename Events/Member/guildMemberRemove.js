@@ -1,29 +1,35 @@
-const {MessageEmbed, WebhookClient, GuildMember} = require('discord.js')
-const config = require('../../Structures/config.json')
+const { MessageEmbed, GuildMember } = require("discord.js");
+const LeaveSetupData = require("../../Structures/Schemas/leaveSetup");
 
 module.exports = {
     name: "guildMemberRemove",
     /**
      * 
-     * @param {GuildMember} member
+     * @param {GuildMember} member 
      */
-    execute (member) {
-        const {user, guild} = member
+    async execute(member) {
+        const { guild, user } = member;
 
-        const Welcomer = new WebhookClient({
-            id: config.WelcomeWebhookID,
-            token: config.WelcomeWebhookToken
-        })
+        const Data = await LeaveSetupData.findOne({ GuildID: guild.id})
+        if(!Data) return;
 
-        const Welcome = new MessageEmbed()
+        const LeaveEmbed = new MessageEmbed()
         .setColor("RED")
-        .setAuthor({name: `${user.tag}`, iconURL: `${user.displayAvatarURL({dynamic: true, size: 512})}`})
-        .setThumbnail(user.avatarURL({dynamic: true, size: 512}))
-        .setDescription(`
-        ${member} has left the server\n
-        Joined: <t:${parseInt(member.joinedTimestamp / 1000)}:R>\nLatest Member Count: **${guild.memberCount}**`)
+        .setAuthor({
+            name: user.tag,
+            iconURL: user.displayAvatarURL({
+                dynamic: true
+            }),
+        })
+        .setThumbnail(user.displayAvatarURL({dynamic: true}))
+        .setDescription(
+        `${member} has left the server\n
+        Joined: <t:${parseInt(member.joinedTimestamp / 1000)}:R>\nLatest Member Count: **${guild.memberCount}**`
+        )
         .setFooter({text: `ID: ${user.id}`})
 
-        Welcomer.send({embeds: [Welcome]})
+        await guild.channels.cache
+            .get(Data.Logs)
+            .send({ embeds: [LeaveEmbed] });
     }
 }
