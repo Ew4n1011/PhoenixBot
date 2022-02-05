@@ -17,9 +17,6 @@ module.exports = {
         const TicketSetup = await TicketSetupData.findOne({GuildID: guild.id})
         if(!TicketSetup) return interaction.reply({content: "The data for this system is outdated."})
 
-        if(!member.roles.cache.find((r) => r.id === TicketSetup.Handlers))
-            return interaction.reply({content: "You cannot use these buttons.", ephemeral: true})
-
         const Embed = new MessageEmbed().setColor("BLUE")
 
         DB.findOne({ChannelID: channel.id}, async (err, docs) => {
@@ -37,14 +34,45 @@ module.exports = {
                 })
                 await DB.updateOne({ChannelID: channel.id}, {Closed: true})
 
-                const MEMBER = guild.members.cache.get(docs.MemberID)
-                const Message = await guild.channels.cache.get(TicketSetup.Transcripts).send({
-                    embeds: [
-                        Embed.setAuthor({name: `${MEMBER.user.tag}`, iconURL: `${MEMBER.user.displayAvatarURL({dynamic: true})}`})
-                        .setTitle(`Transcript Type: ${docs.type}\nID: ${docs.TicketID}`)
-                    ],
-                    files: [attachment]
-                })
+                const Message = await guild.channels.cache
+            .get(TicketSetup.Transcripts)
+            .send({
+              embeds: [
+                Embed.setTitle(`Ticket Closed`).addFields([
+                  {
+                    name: "Ticket ID",
+                    value: `${docs.TicketID}`,
+                    inline: true,
+                  },
+                  {
+                    name: "Type",
+                    value: `${docs.Type}`,
+                    inline: true,
+                  },
+                  {
+                    name: "Opened By",
+                    value: `<@!${docs.MembersID[0]}>`,
+                    inline: true,
+                  },
+                  {
+                    name: "Open Time",
+                    value: `<t:${docs.OpenTime}:R>`,
+                    inline: true,
+                  },
+                  {
+                    name: "Closed Time",
+                    value: `<t:${parseInt(Date.now() / 1000)}:R>`,
+                    inline: true,
+                  },
+                  {
+                    name: "Closed By",
+                    value: `<@!${docs.ClaimedBy}>`,
+                    inline: true,
+                  },
+                ]),
+              ],
+              files: [attachment],
+            });
 
                 interaction.reply({embeds: [Embed.setDescription(`The transcript is now saved [TRANSCRIPT](${Message.url})`)]})
 

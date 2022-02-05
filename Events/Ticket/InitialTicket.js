@@ -31,17 +31,18 @@ module.exports = {
                 id: Data.Everyone,
                 deny: ["SEND_MESSAGES", "VIEW_CHANNEL", "READ_MESSAGE_HISTORY"]
             }]
-        }).then(async(channel) => {
+        }).then(async (channel) => {
             await DB.create({
-                GuildID: guild.id,
-                MemberID: member.id,
-                TicketID: ID,
-                ChannelID: channel.id,
-                Closed: false,
-                Locked: false,
-                Type: customId,
-                Claimed: false
-            })
+              GuildID: guild.id,
+              MembersID: member.id,
+              TicketID: ID,
+              ChannelID: channel.id,
+              Closed: false,
+              Locked: false,
+              Type: customId,
+              Claimed: false,
+              OpenTime: parseInt(channel.createdTimestamp / 1000),
+            });
 
             const Embed = new MessageEmbed()
             .setAuthor({name: `${guild.name} | Ticket: ${ID}`, iconURL: `${guild.iconURL({dynamic: true})}`})

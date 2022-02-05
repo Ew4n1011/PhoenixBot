@@ -1,6 +1,7 @@
 const { Message, MessageEmbed } = require('discord.js') 
 const Levels = require("discord-xp");
 const { Database } = require('../../Structures/config.json');
+const config = require('../../Structures/config.json')
 Levels.setURL(Database);
 
 module.exports = {
@@ -20,19 +21,19 @@ module.exports = {
     const Embed = new MessageEmbed().setColor("RANDOM").setDescription(`${message.author} congrats! You have leveled up to: **level ${user.level}**. :tada:`)
     message.channel.send({embeds: [Embed]})
     if (user.level == 5) {
-        message.member.roles.add('863850965995880458')
+        message.member.roles.add(config.Level05)
     }
     if (user.level == 10) {
-        message.member.roles.add('863851122719195156')
+        message.member.roles.add(config.Level10)
     }
     if (user.level == 20) {
-        message.member.roles.add('863851219155550258')
+        message.member.roles.add(config.Level20)
     }
     if (user.level == 50) {
-        message.member.roles.add('863851286210150443')
+        message.member.roles.add(config.Level50)
     }
     if (user.level == 100) {
-        message.member.roles.add('863851340056494130')
+        message.member.roles.add(config.Level100)
     }
 }
 }
