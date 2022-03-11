@@ -4,8 +4,9 @@ const DB = require("../../Structures/Schemas/welcomeSetup");
 
 module.exports = {
   name: "welcomesetup",
+  usage: "/welcomesetup [welcome] [general] [rules] [role]",
   description: "Setup welcome channel",
-  permissions: "ADMINISTRATOR",
+  permissions: "MANAGE_MESSAGES",
   options: [
     {
       name: "welcome",

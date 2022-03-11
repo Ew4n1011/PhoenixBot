@@ -3,8 +3,9 @@ const ms = require('ms')
 
 module.exports = {
     name: "giveaway",
+    usage: "/giveaway",
     description: "A complete giveaway system.",
-    permission: "ADMINISTRATOR",
+    permission: "MANAGE_MESSAGES",
     options: [
         {
             name: "start",

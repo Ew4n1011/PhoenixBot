@@ -2,6 +2,7 @@ const {CommandInteraction, MessageEmbed} = require('discord.js')
 
 module.exports = {
     name: "clear",
+    usage: "/clear [amount]",
     description: "Deletes a specified number of messages from a channel or a target.",
     permission: "MANAGE_MESSAGES",
     options: [

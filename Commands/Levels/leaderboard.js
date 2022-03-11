@@ -3,6 +3,7 @@ const Levels = require("discord-xp");
 
 module.exports = {
     name: "leaderboard",
+    usage: "/leaderboard",
     description: "Shows top 10 highest ranks in the server.",
     /**
      * 

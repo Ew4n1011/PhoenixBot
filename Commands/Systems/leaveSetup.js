@@ -3,8 +3,9 @@ const DB = require("../../Structures/Schemas/leaveSetup");
 
 module.exports = {
     name: "leavesetup",
+    usage: "/leavesetup [logs]",
     description: "Leave System Setup",
-    permissions: "ADMINISTRATOR",
+    permissions: "MANAGE_MESSAGES",
     options: [
         {
             name: "logs",

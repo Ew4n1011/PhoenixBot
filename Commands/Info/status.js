@@ -4,6 +4,7 @@ require("../../Events/Client/ready")
 
 module.exports = {
     name: "status",
+    usage: "/status",
     description: "Displays the status of the client and database connection",
     /**
      * 

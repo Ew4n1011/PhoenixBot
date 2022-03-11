@@ -4,6 +4,7 @@ const canvacord = require('canvacord');
 
 module.exports = {
     name: "rank",
+    usage: "/rank",
     description: "Get the rank of a user.",
     /**
      * 

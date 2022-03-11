@@ -1,5 +1,5 @@
 const {MessageEmbed, Message, WebhookClient} = require('discord.js')
-const config = require('../../Structures/config.json')
+const config = require('../../Structures/config.js')
 
 module.exports = {
     name: "messageUpdate",

@@ -1,6 +1,6 @@
 const {Client} = require('discord.js')
 const mongoose = require('mongoose')
-const {Database} = require("../../Structures/config.json")
+const {Database} = require("../../Structures/config.js")
 module.exports = {
     name: "ready",
     once: true,

@@ -2,8 +2,8 @@ const {ContextMenuInteraction, MessageEmbed} = require('discord.js')
 
 module.exports = {
     name: "userinfo",
+    usage: "Right click on a user and select userinfo under apps to see the information of a user.",
     type: "USER",
-    permission: "ADMINISTRATOR",
     /**
      * 
      * @param {ContextMenuInteraction} interaction

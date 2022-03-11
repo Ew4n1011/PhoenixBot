@@ -3,8 +3,9 @@ const Levels = require('discord-xp')
 
 module.exports = {
     name: "givexp",
+    usage: "/givexp [member] [amount]",
     description: "Give xp to a member.",
-    permission: "ADMINISTRATOR",
+    permission: "MANAGE_MESSAGES",
     options: [
         {
             name: "member",

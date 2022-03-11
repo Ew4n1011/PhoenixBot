@@ -3,6 +3,7 @@ const DB = require('../../Structures/Schemas/suggestDB')
 
 module.exports = {
     name: "suggest",
+    usage: "/suggest [type] [suggestion]",
     description: "Suggest a new feature.",
     options: [
         {
