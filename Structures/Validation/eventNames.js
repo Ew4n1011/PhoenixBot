@@ -8,6 +8,7 @@ module.exports = {
         "channelPinsUpdate",
         "channelUpdate",
         "debug",
+        "distube",
         "emojiCreate",
         "emojiDelete",
         "emojiUpdate",
