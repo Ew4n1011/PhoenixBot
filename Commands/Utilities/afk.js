@@ -3,7 +3,7 @@ const DB = require('../../Structures/Schemas/AFKSystem')
 
 module.exports = {
     name: "afk",
-    usage: "/afk [set] [status] [return]",
+    usage: "/afk",
     description: "A multi-guild AFK system.",
     options: [
         {

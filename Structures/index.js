@@ -7,22 +7,11 @@ const client = new Client({intents:32767});
 const config = require("./config.js");
 
 client.commands = new Collection();
-
-const {DisTube} = require('distube')
-const {SpotifyPlugin} = require('@distube/spotify')
-
-client.distube = new DisTube(client, {
-    emitNewSongOnly: true,
-    youtubeDL: false,
-    leaveOnFinish: true,
-    emitAddSongWhenCreatingQueue: false,
-    plugins: [new SpotifyPlugin()]
-})
-module.exports = client
+client.buttons = new Collection();
 
 require('../Systems/giveawaySys')(client);
 
-["Events", "Commands"].forEach(handler => {
+["Events", "Commands", "Buttons"].forEach(handler => {
     require(`./Handlers/${handler}`)(client, PG, Ascii);
 });
 

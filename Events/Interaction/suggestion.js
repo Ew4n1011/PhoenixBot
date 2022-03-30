@@ -10,8 +10,6 @@ module.exports = {
     async execute(interaction) {
         if(!interaction.isButton()) return
         const {guildID, customId, message} = interaction
-        if(!interaction.member.permissions.has("ADMINISTRATOR"))
-        return interaction.reply({content: "You cannot use this button", ephemeral: true})
 
         if (!["suggest-accept", "suggest-decline"].includes(customId)) return;
 

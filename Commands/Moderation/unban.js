@@ -2,7 +2,7 @@ const {CommandInteraction, MessageEmbed} = require("discord.js");
 
 module.exports = {
 	name: "unban",
-	usage: "/unban [id] [reason]",
+	usage: "/unban",
 	description: "Unbans a member",
 	permission: "BAN_MEMBERS",
 	options: [{
