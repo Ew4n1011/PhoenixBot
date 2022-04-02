@@ -1,5 +1,5 @@
-const {MessageEmbed, Message, WebhookClient} = require('discord.js')
-const config = require('../../Structures/config.js')
+const {MessageEmbed, Message, mes} = require('discord.js')
+const DB = require('../../Structures/Schemas/messageDB.js')
 
 module.exports = {
     name: "messageUpdate",
@@ -24,6 +24,11 @@ module.exports = {
         **Original**:\n ${Original} \n**Edited**:\n ${Edited}`.slice("0", "4096"))
         .setFooter({text: `Member: ${newMessage.author.tag} | ID: ${newMessage.author.id}`})
 
-        new WebhookClient({url: config.msgLogWebhookURL}).send({embeds: [Log]}).catch((err) => console.log(err))
+        DB.findOne({GuildID: newMessage.guildId}, (err, docs) => {
+            if (err) throw err;
+                if (!docs) return
+            
+            newMessage.guild.channels.cache.get(docs.ChannelID).send({embeds: [Log]})
+        })
     }
 }

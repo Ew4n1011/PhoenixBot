@@ -1,5 +1,5 @@
-const {MessageEmbed, Message, WebhookClient} = require('discord.js')
-const config = require('../../Structures/config.js')
+const {MessageEmbed, Message} = require('discord.js')
+const DB = require('../../Structures/Schemas/messageDB.js')
 
 module.exports = {
     name: "messageDelete",
@@ -18,6 +18,11 @@ module.exports = {
             Log.addField(`Attachments:`, `${message.attachments.map(a => a.url)}`, true)
         }
 
-        new WebhookClient({url: config.msgLogWebhookURL}).send({embeds: [Log]}).catch((err) => console.log(err))
+        DB.findOne({GuildID: message.guildId}, (err, docs) => {
+            if (err) throw err;
+                if (!docs) return
+            
+            message.guild.channels.cache.get(docs.ChannelID).send({embeds: [Log]})
+        })
     }
 }

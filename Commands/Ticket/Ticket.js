@@ -6,6 +6,7 @@ const TicketSetupData = require("../../Structures/Schemas/TicketSetup");
 module.exports = {
     name: "ticket",
     description: "Ticket Actions",
+    permission: "ADMINISTRATOR",
     options: [
         {
             name: "user",
